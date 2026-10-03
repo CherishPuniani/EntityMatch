@@ -1,0 +1,41 @@
+# Local challenge inputs and official utilities supplied separately
+/dataset/
+/student_resource/
+
+# Generated pipeline workspaces, outputs, checkpoints, and logs
+/work*/
+/fx_unseen/
+/out_unseen/
+/output*/
+/logs/
+*.parquet
+*.npy
+*.npz
+*.pt
+*.pth
+*.safetensors
+*.pkl
+
+# Local Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+
+# Machine-local files and credentials
+.DS_Store
+Icon?
+.idea/
+.vscode/
+.env
+.env.*
+!.env.example
+.aws/
+.kaggle/
+kaggle.json
+*.pem
+*.key

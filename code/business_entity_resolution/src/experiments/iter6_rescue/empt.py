@@ -1,0 +1,20 @@
+import polars as pl
+P='/tmp/claude-1022/-home2-home-amritanshu-t-amazon-mlc-26-Amazon-mlc-26/fe28c95e-d5a1-48c7-beb4-ebf7a1a8677e/scratchpad/'
+def iid(c): return (pl.col(c).str.slice(1,1).cast(pl.Int64)*10**10 + pl.col(c).str.split('-').list.get(1).cast(pl.Int64))
+s1=pl.read_parquet('work/p_train_s1.parquet',columns=['id','country']).with_columns(s1=iid('id'))
+g=pl.read_parquet('work/gt_pairs_int.parquet')
+n=g.group_by('s1').agg(n=pl.len())
+t=s1.join(n,on='s1',how='left').with_columns(pl.col('n').fill_null(0))
+print('TRAIN truth: frac S1 with 0 copies, mean copies by country')
+print(t.group_by('country').agg(N=pl.len(),empty=(pl.col('n')==0).mean(),mean=pl.col('n').mean()))
+print(t.group_by('country','n').agg(k=pl.len()).with_columns(f=pl.col('k')/pl.col('k').sum().over('country')).sort('country','n').pivot(on='country',index='n',values='f'))
+# test predictions
+m=pl.read_csv('output_final8/matching_results.tsv',separator='\t',schema_overrides={'matched_entity_ids':pl.String})
+ts1=pl.read_parquet('work/p_test_s1.parquet',columns=['id','country'])
+m=m.with_columns(n=pl.when(pl.col('matched_entity_ids').is_null()|(pl.col('matched_entity_ids')=='')).then(0).otherwise(pl.col('matched_entity_ids').str.split(',').list.len()))
+x=ts1.join(m,left_on='id',right_on='source1_entity_id',how='left')
+print('rows',m.height, 'test S1',ts1.height, 'missing in output', x['n'].null_count())
+x=x.with_columns(pl.col('n').fill_null(0))
+print('TEST final8 predicted: empty frac, mean links')
+print(x.group_by('country').agg(N=pl.len(),empty=(pl.col('n')==0).mean(),mean=pl.col('n').mean()))
+print(x.group_by('country','n').agg(k=pl.len()).with_columns(f=pl.col('k')/pl.col('k').sum().over('country')).sort('country','n').pivot(on='country',index='n',values='f'))

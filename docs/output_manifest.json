@@ -1,0 +1,34 @@
+{
+  "audit_date": "2026-10-04",
+  "files": {
+    "matching_results.tsv": {
+      "bytes": 97365085,
+      "sha256": "82ea86819650436ccbadec9c2bb909251fd57ed24301c83e8af581796cf7a342",
+      "rows": 1732544,
+      "nonempty_rows": 1631275,
+      "pairs": 5813732,
+      "max_targets_per_row": 11
+    },
+    "candidate_pairs.tsv": {
+      "bytes": 862216745,
+      "sha256": "e68db05514bef40da750c03d92123caf953ad595072ce2644e614a20eb61d44b",
+      "rows": 1732544,
+      "nonempty_rows": 1732542,
+      "pairs": 65163241,
+      "max_targets_per_row": 41
+    }
+  },
+  "checks": {
+    "headers": "pass",
+    "id_format": "pass",
+    "unique_source_ids": "pass",
+    "unique_targets_within_each_row": "pass",
+    "same_source_ids_and_order": "pass",
+    "matches_subset_of_candidates": "pass"
+  },
+  "limitations": [
+    "No dataset available to check IDs against source records.",
+    "Official challenge validator is absent.",
+    "No ground truth, saved models or logs available to verify accuracy or producing run."
+  ]
+}
